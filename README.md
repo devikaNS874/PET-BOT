@@ -135,10 +135,15 @@ Send commands:
 **Simulation output**
 <img width="717" height="926" alt="image" src="https://github.com/user-attachments/assets/8c19587e-4679-4bb0-b6e2-126a8e17af95" />
 
+---
+
 <img width="711" height="921" alt="image" src="https://github.com/user-attachments/assets/e6b784e8-8e22-4771-a108-8481afe60e2a" />
+
+---
 
 <img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/9031fe6d-1021-49c8-a58a-495a2ed6a82e" />
 
+---
 
 #### Diagrams
 
