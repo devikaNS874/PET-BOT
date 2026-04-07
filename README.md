@@ -46,26 +46,26 @@ https://wokwi.com/projects/459177680688141313
 ## Features
 
 ## Key features of our project:
-🔹 State Machine 
+1. State Machine 
 The bot uses an “Emotion State” variable 
 Each command changes the state 
 Based on the state → different action is executed 
-🔹 Motor Control Logic 
+2. Motor Control Logic 
 Each motor has 2 pins: 
 HIGH/LOW combinations decide direction 
 Example: 
 HIGH + LOW → Forward 
 LOW + HIGH → Backward 
-🔹 PWM Speed Control 
+3. PWM Speed Control 
 Speed is controlled using PWM (Pulse Width Modulation) 
 Value range: 0–255 
 Higher value → faster motor 
-🔹 Animation System 
+4. Animation System 
 Uses timing (millis) for: 
 Eye blinking 
 Eye movement 
 Makes display look dynamic 
-🔹 Full System Working Flow 
+5. Full System Working Flow 
 Plain text 
 Copy code 
 Mobile App → Bluetooth → ESP32 → Decision Making→ Motor Driver 
@@ -125,12 +125,57 @@ Send commands:
 ### For Software:
 
 #### Screenshots 
-**ARDUINO IDE: code running and output on serial monitor**
-https://drive.google.com/file/d/1CYCUl89IZzrr62z-IsjdJ3Kmwlyig97-/view?usp=drivesdk
+**Simulation output**
+<img width="717" height="926" alt="image" src="https://github.com/user-attachments/assets/8c19587e-4679-4bb0-b6e2-126a8e17af95" />
+<img width="711" height="921" alt="image" src="https://github.com/user-attachments/assets/e6b784e8-8e22-4771-a108-8481afe60e2a" />
+
 
 #### Diagrams
 
-**System Architecture:**
-<img width="1041" height="919" alt="system arch" src="https://github.com/user-attachments/assets/ab611547-f067-4f2f-b04e-e583728db525" />
+**System block diagram:**
+<img width="1045" height="422" alt="Screenshot 2026-03-21 170311" src="https://github.com/user-attachments/assets/1ac496ce-073f-4aa5-bdac-226784db2b5b" />
+
+---
+
+### For Hardware:
+
+#### Circuit diagram 
+<img width="1076" height="616" alt="Screenshot 2026-03-21 201714" src="https://github.com/user-attachments/assets/ad1b9d70-d6ff-46c7-a3f1-d12301f1e696" />
+
+#### Bill of Materials (BOM)
+| Component               | Quantity | Specifications                | Price (Approx) | 
+| ----------------------- | -------- | ----------------------------- | -------------- |
+| ESP32 Dev Board         | 1        | WiFi + Bluetooth, 240 MHz     | ₹400 – ₹600    |
+| L293D Motor Driver IC   | 1        | Dual H-Bridge motor driver    | ₹80 – ₹120     |
+| DC Motors               | 2        | 3–6V geared motors            | ₹150 – ₹250    |
+| Wheels                  | 2        | Compatible with DC motors     | ₹100 – ₹150    |
+| OLED Display (SSD1306)  | 1        | 0.96 inch, I2C, 128×64        | ₹150 – ₹250    | 
+| Lithium-ion Battery     | 2        | 3.7V, 18650 cells             | ₹200 – ₹300    | 
+| Battery Holder          | 1        | 2-cell holder                 | ₹50 – ₹80      |
+| Buck Converter (LM2596) | 1        | Step-down to 5V               | ₹80 – ₹120     |
+| Chassis (Robot Base)    | 1        | Acrylic/Plastic               | ₹200 – ₹300    | 
+| Jumper Wires            | 20+      | Male-to-Male / Male-to-Female | ₹50 – ₹100     | 
+| Breadboard (small)      | 1        | mini                          |  ₹50 – ₹70     | 
+
+Total Estimated Cost
+ ≈ ₹1,560 – ₹2,370
+We can build an affordable model by adding these changes
+Where cost was reduced
+1. Removed 2nd battery + holder
+2. Replaced the buck converter with a cheaper boost module
+3. Used DIY chassis instead of a ready kit
+4. Used basic motors instead of geared premium ones
+
+---
+
+## Project Demo
+
+### Video
+https://drive.google.com/file/d/1nD0kKEi5P7jhBiOGrP46ZuP9NhIhUuan/view?usp=sharing
+### final project photo
+![photo 3](https://github.com/user-attachments/assets/944b1a22-f775-40f8-9dd1-2780f5682cac)
+![photo1](https://github.com/user-attachments/assets/107a2516-69ab-4444-8665-06aeb47aa032)
+![photo2](https://github.com/user-attachments/assets/ed0c23f9-48f1-4f31-a638-1886079c438e)
 
 
+---
