@@ -71,6 +71,9 @@ Copy code
 Mobile App → Bluetooth → ESP32 → Decision Making→ Motor Driver 
 →Motors → Movement→ OLED Display → Emotions
 
+### Poster
+![poster](https://github.com/user-attachments/assets/2654e15d-f8a0-4cf6-bd08-a15247352398)
+
 ---
 
 # Implementation
