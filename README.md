@@ -27,9 +27,10 @@ To address these challenges, we introduce a smart pet bot designed to provide en
   3. Adafruit_GFX.h - Core graphics library(Provides functions like: Draw text, Draw shapes (lines, circles, etc.))
   4. Adafruit_SSD1306.h - Specifically for SSD1306 OLED display.Works along with Adafruit_GFX
 - Tools used: Arduino serial monitor
-### simulation software used: wokwi
+### simulation software used: wokwi,Tinkercad
 #### link
 https://wokwi.com/projects/459177680688141313
+https://www.tinkercad.com/things/b8jfFjthrxJ-daring-kasi-gogo
 ### MIT app inventor: for building the mobile app
 #### link
 https://appinventor.mit.edu
@@ -133,7 +134,10 @@ Send commands:
 #### Screenshots 
 **Simulation output**
 <img width="717" height="926" alt="image" src="https://github.com/user-attachments/assets/8c19587e-4679-4bb0-b6e2-126a8e17af95" />
+
 <img width="711" height="921" alt="image" src="https://github.com/user-attachments/assets/e6b784e8-8e22-4771-a108-8481afe60e2a" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/9031fe6d-1021-49c8-a58a-495a2ed6a82e" />
 
 
 #### Diagrams
