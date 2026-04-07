@@ -30,6 +30,9 @@ To address these challenges, we introduce a smart pet bot designed to provide en
 ### simulation software used: wokwi
 #### link
 https://wokwi.com/projects/459177680688141313
+### MIT app inventor: for building the mobile app
+#### link
+https://appinventor.mit.edu
 
 **For Hardware:**
 1. ESP 32 - Brain of the system
@@ -139,8 +142,6 @@ Send commands:
 <img width="1045" height="422" alt="Screenshot 2026-03-21 170311" src="https://github.com/user-attachments/assets/1ac496ce-073f-4aa5-bdac-226784db2b5b" />
 
 ---
-
-### For Hardware:
 
 #### Circuit diagram 
 <img width="1076" height="616" alt="Screenshot 2026-03-21 201714" src="https://github.com/user-attachments/assets/ad1b9d70-d6ff-46c7-a3f1-d12301f1e696" />
