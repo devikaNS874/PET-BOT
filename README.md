@@ -132,6 +132,7 @@ Send commands:
 ### For Software:
 
 #### Screenshots 
+
 **Simulation output**
 <img width="717" height="926" alt="image" src="https://github.com/user-attachments/assets/8c19587e-4679-4bb0-b6e2-126a8e17af95" />
 
