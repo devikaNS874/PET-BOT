@@ -1,0 +1,270 @@
+
+#include "BluetoothSerial.h"
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+/* ---------- MOTOR PINS ---------- */
+#define IN1 32
+#define IN2 27
+#define ENA 25
+
+#define IN3 14
+#define IN4 12
+#define ENB 33
+`
+/* ---------- PWM SETTINGS ---------- */
+#define PWM_FREQ 5000
+#define PWM_RES  8
+#define ENA_CH   0
+#define ENB_CH   1
+
+int speedVal = 200;
+
+/* ---------- BLUETOOTH ---------- */
+BluetoothSerial serialBT;
+
+/* ---------- OLED ---------- */
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET -1
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+/* ---------- EMOTIONS ---------- */
+enum Emotion {
+  NORMAL, HAPPY, SAD, SLEEPY, ANGRY, CONFUSED,
+  MOVING_F, MOVING_B, MOVING_L, MOVING_R, STOPPED
+};
+
+Emotion currentEmotion = NORMAL;
+
+/* ---------- BLINK ---------- */
+bool blinkState = false;
+unsigned long lastBlink = 0;
+
+/* ---------- ANIMATION ---------- */
+int eyeOffsetX = 0;
+int z1 = 50, z2 = 40, z3 = 30;
+
+/* ---------- SETUP ---------- */
+void setup() {
+
+  Serial.begin(9600);
+  serialBT.begin("ESP32-BT");
+
+  Wire.begin(21, 22);
+
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  display.clearDisplay();
+
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+  ledcSetup(ENA_CH, PWM_FREQ, PWM_RES);
+  ledcSetup(ENB_CH, PWM_FREQ, PWM_RES);
+
+  ledcAttachPin(ENA, ENA_CH);
+  ledcAttachPin(ENB, ENB_CH);
+
+  stopMotors();
+}
+
+/* ---------- LOOP ---------- */
+void loop() {
+
+  if (serialBT.available()) {
+
+    char cmd = serialBT.read();
+    Serial.println(cmd);
+
+    switch (cmd) {
+
+      // Emotions
+      case '5': currentEmotion = HAPPY; break;
+      case '6': currentEmotion = SAD; break;
+      case '7': currentEmotion = SLEEPY; break;
+      case '8': currentEmotion = ANGRY; break;
+      case '9': currentEmotion = CONFUSED; break;
+      case 'A': currentEmotion = NORMAL; break;
+
+      // Movements
+      case '1': currentEmotion = MOVING_F; break;
+      case '2': currentEmotion = MOVING_B; break;
+      case '3': currentEmotion = MOVING_L; break;
+      case '4': currentEmotion = MOVING_R; break;
+      case '0': currentEmotion = STOPPED; break;
+      //tail 
+      case 'u': currentEmotion = MOVING_u; break;
+      case 'd': currentEmotion = MOVING_d; break;
+      case 'g': currentEmotion = MOVING_g; break;
+      case 'r': currentEmotion = MOVING_r; break;
+    }
+  }
+
+  unsigned long now = millis();
+
+  if (!blinkState && now - lastBlink > 2000) {
+    blinkState = true;
+    lastBlink = now;
+  }
+  if (blinkState && now - lastBlink > 180) {
+    blinkState = false;
+    lastBlink = now;
+  }
+
+  eyeOffsetX = sin(now * 0.002) * 4;
+
+  display.clearDisplay();
+
+  switch (currentEmotion) {
+
+    case HAPPY:     drawHappy(); stopMotors(); break;
+    case SAD:       drawSad(); stopMotors(); break;
+    case SLEEPY:    drawSleepy(); stopMotors(); break;
+    case ANGRY:     drawAngry(); stopMotors(); break;
+    case CONFUSED:  drawConfused(); stopMotors(); break;
+
+    case MOVING_F:  drawNormal(); moveForward(); break;
+    case MOVING_B:  drawNormal(); moveBackward(); break;
+    case MOVING_L:  drawNormal(); turnLeft(); break;
+    case MOVING_R:  drawNormal(); turnRight(); break;
+    case STOPPED:   drawNormal(); stopMotors(); break;
+
+    case MOVING_u:  drawNormal(); tailup(); break;
+    case MOVING_d:  drawNormal(); taildown(); break;
+    case MOVING_g:  drawNormal(); grab(); break;
+    case MOVING_r:  drawNormal(); release(); break;
+
+    default:        drawNormal(); stopMotors(); break;
+  }
+
+  display.display();
+  delay(30);
+}
+
+/* ================================================= */
+/* ================= MOTOR CONTROL ================= */
+/* ================================================= */
+/* RIGHT MOTOR POLARITY COMPENSATED */
+
+void moveForward() {
+
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+
+  digitalWrite(IN3, LOW);   // reversed
+  digitalWrite(IN4, HIGH);  // reversed
+
+  ledcWrite(ENA_CH, speedVal);
+  ledcWrite(ENB_CH, speedVal);
+}
+
+void moveBackward() {
+
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+
+  digitalWrite(IN3, HIGH);  // reversed
+  digitalWrite(IN4, LOW);   // reversed
+
+  ledcWrite(ENA_CH, speedVal);
+  ledcWrite(ENB_CH, speedVal);
+}
+
+void turnLeft() {
+
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN1, HIGH);
+
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+
+  ledcWrite(ENA_CH, speedVal);
+  ledcWrite(ENB_CH, speedVal);
+}
+
+void turnRight() {
+
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+
+  ledcWrite(ENA_CH, speedVal);
+  ledcWrite(ENB_CH, speedVal);
+}
+
+void stopMotors() {
+  ledcWrite(ENA_CH, 0);
+  ledcWrite(ENB_CH, 0);
+}
+
+/* ================================================= */
+/* ================= EMOTIONS ====================== */
+/* ================================================= */
+
+void drawNormal() {
+  drawEyesBasic(8);
+}
+
+void drawHappy() {
+  drawEyesBasic(8);
+  display.fillTriangle(35 + eyeOffsetX, 30, 60 + eyeOffsetX, 16, 35 + eyeOffsetX, 16, BLACK);
+  display.fillTriangle(94 + eyeOffsetX, 16, 94 + eyeOffsetX, 30, 69 + eyeOffsetX, 16, BLACK);
+}
+
+void drawSad() {
+  drawEyesBasic(8);
+  display.fillTriangle(35 + eyeOffsetX, 16, 60 + eyeOffsetX, 32, 60 + eyeOffsetX, 16, BLACK);
+  display.fillTriangle(69 + eyeOffsetX, 32, 94 + eyeOffsetX, 16, 69 + eyeOffsetX, 16, BLACK);
+}
+
+void drawAngry() {
+  drawEyesBasic(8);
+  display.fillTriangle(35 + eyeOffsetX, 18, 60 + eyeOffsetX, 30, 60 + eyeOffsetX, 18, BLACK);
+  display.fillTriangle(94 + eyeOffsetX, 26, 69 + eyeOffsetX, 16, 94 + eyeOffsetX, 16, BLACK);
+}
+
+void drawConfused() {
+  drawEyesBasic(10);
+  display.fillCircle(47 + eyeOffsetX, 52, 15, BLACK);
+  display.fillCircle(81 + eyeOffsetX, 52, 15, BLACK);
+}
+
+void drawSleepy() {
+
+  display.fillRoundRect(33 + eyeOffsetX, 28, 28, 7, 4, WHITE);
+  display.fillRoundRect(73 + eyeOffsetX, 28, 28, 7, 4, WHITE);
+
+  display.setTextColor(WHITE);
+
+  display.setTextSize(3);
+  display.setCursor(48, z1); display.print("Z");
+
+  display.setTextSize(2);
+  display.setCursor(68, z2); display.print("z");
+
+  display.setTextSize(1);
+  display.setCursor(80, z3); display.print("z");
+
+  z1--; z2--; z3--;
+  if (z1 < -40) {
+    z1 = 50;
+    z2 = 40;
+    z3 = 30;
+  }
+}
+
+void drawEyesBasic(int radius) {
+
+  if (!blinkState) {
+    display.fillRoundRect(35 + eyeOffsetX, 16, 25, 32, radius, WHITE);
+    display.fillRoundRect(69 + eyeOffsetX, 16, 25, 32, radius, WHITE);
+  } else {
+    display.fillRect(35 + eyeOffsetX, 32, 25, 3, WHITE);
+    display.fillRect(69 + eyeOffsetX, 32, 25, 3, WHITE);
+  }
+}
