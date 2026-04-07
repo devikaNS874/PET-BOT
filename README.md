@@ -162,7 +162,8 @@ Send commands:
 
 Total Estimated Cost
  ≈ ₹1,560 – ₹2,370
-We can build an affordable model by adding these changes
+ 
+We can build a more affordable model by adding these changes
 Where cost was reduced
 1. Removed 2nd battery + holder
 2. Replaced the buck converter with a cheaper boost module
