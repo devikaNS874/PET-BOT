@@ -30,7 +30,7 @@ To address these challenges, we introduce a smart pet bot designed to provide en
 ### simulation software used: wokwi,Tinkercad
 #### link
 https://wokwi.com/projects/459177680688141313
-https://www.tinkercad.com/things/b8jfFjthrxJ-daring-kasi-gogo
+https://www.tinkercad.com
 ### MIT app inventor: for building the mobile app
 #### link
 https://appinventor.mit.edu
@@ -178,7 +178,8 @@ Where cost was reduced
 ---
 
 ## Project Demo
-
+### Motor movements(simulation using tinkercad)
+https://www.tinkercad.com/things/b8jfFjthrxJ-daring-kasi-gogo
 ### Video
 https://drive.google.com/file/d/1nD0kKEi5P7jhBiOGrP46ZuP9NhIhUuan/view?usp=sharing
 ### final project photo
